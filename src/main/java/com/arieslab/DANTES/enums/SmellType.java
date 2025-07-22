@@ -39,6 +39,15 @@ public enum SmellType {
     private final String endpointSlug;
     private final String description;
 
+    /**
+     * This getter is automatically used by Jackson during serialization.
+     * It adds the enum's constant name (e.g., "ASSERTION_ROULETTE") to the JSON object.
+     * @return The name of the enum constant.
+     */
+    public String getName() {
+        return this.name();
+    }
+
     // This allows Jackson to find an enum by its displayName if needed, though not required for serialization.
     public static SmellType fromDisplayName(String name) {
         for (SmellType smell : SmellType.values()) {

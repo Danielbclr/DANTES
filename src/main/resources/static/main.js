@@ -234,7 +234,7 @@ const form = document.getElementById('myForm');
         popUpText = "Multiple unexplained assertions in a test method hinder readability and understanding, making test failures unclear."
         button1.className = "button";
         button1.onclick = function () {
-          refactorAA(value.lineBegin, value.lineEnd, this, value);
+          performRefactor(value, this);
         };
         button1.innerHTML = value.type.refactorAction;
       }
@@ -366,6 +366,52 @@ const form = document.getElementById('myForm');
         });
     }
 
+    function performRefactor(smell, button) {
+      // 1. Get the CURRENT code from the textarea. This is the stateless principle.
+      const currentCode = inputText.value;
+
+      const formData = new URLSearchParams();
+      formData.append('code', currentCode);
+      formData.append('smellType', smell.type.name); // Send the enum name (e.g., "ASSERTION_ROULETTE")
+      formData.append('line', smell.lineBegin);
+
+      fetch('/api/refactor', { // 2. Call our new, unified endpoint
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData.toString()
+      })
+        .then(response => response.json())
+        .then(data => {
+          // New, clear, and robust way:
+          // The 'data' object is now { refactoredCode: "...", changedLines: [...], message: "..." }
+          const refactoredCode = data.refactoredCode;
+          const changedLines = data.changedLines; // You now have access to this data!
+
+          console.log(data.message); // "Refactoring successful."
+
+          refactoredCodeContainer.textContent = refactoredCode;
+          inputText.value = refactoredCode;
+
+          // You can now use the 'changedLines' array for more precise highlighting
+          refactorDataLine += changedLines.join(',') + ",";
+          refactoredCodePre.setAttribute('data-line', refactorDataLine);
+          Prism.highlightElement(refactoredCodeContainer);
+
+          // Update the button state
+          smell.refactor2 = true;
+          button.className = "button-refactored";
+          button.textContent = "Refactored!";
+          button.disabled = true; // Disable the button after refactoring
+        })
+        .catch(error => {
+            console.error("Refactoring failed:", error);
+            alert("An error occurred during refactoring.");
+        });
+    }
+
+//    TO REMOVE
     function refactorCI(lineBegin, lineEnd, button, smell) {
       const formData = new URLSearchParams();
       // formData.append('inputText', data);

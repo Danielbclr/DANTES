@@ -7,6 +7,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
  *
  * This class is a stateless Spring Component, making it thread-safe for use in a web application.
  */
+@Slf4j
 @Component
 public class AssertionRouletteDetector implements ITestSmellDetector {
 
@@ -33,6 +35,7 @@ public class AssertionRouletteDetector implements ITestSmellDetector {
     public List<TestSmell> findSmells(String javaCode) {
         // The list of smells is a local variable, making this method thread-safe.
         List<TestSmell> detectedSmells = new ArrayList<>();
+        log.info("Received code for Assertion Roulette detection.");
         try {
             CompilationUnit compilationUnit = StaticJavaParser.parse(javaCode);
             // The visitor is instantiated for each call and given the local list to populate.
@@ -41,6 +44,7 @@ public class AssertionRouletteDetector implements ITestSmellDetector {
             // Handle parsing errors gracefully, e.g., if the user submits invalid code.
             System.err.println("Error parsing code for Assertion Roulette detection: " + e.getMessage());
         }
+        log.info("Assertion Roulette smells found: {}", detectedSmells.size());
         return detectedSmells;
     }
 
