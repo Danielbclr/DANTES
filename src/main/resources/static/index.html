@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>DANTES</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.css" />
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-highlight/prism-line-highlight.css" />
+  <link id="light-mode-theme" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-solarizedlight.min.css"
+    rel="stylesheet" />
+  <link id="dark-mode-theme" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+  <p><img src="https://github.com/arieslab/DANTES/blob/main/logotipo-dantes.png?raw=true" width="528"></p>
+
+  <form id="myForm">
+    <textarea id="inputText" name="inputText" placeholder="Insert your test code here"></textarea>
+    <br>
+    <div style="display:flex;    align-items: center;" class="code-container">
+      <input type="submit" value="Detect">
+      <input type="file" id="fileInput" style="display: none;">
+      <input type="button" class="file-button" value="Upload a file"
+        onclick="document.getElementById('fileInput').click();" />
+    </div>
+  </form>
+
+  <div id="response" style="display:flex; margin-left: 14px; color: var(--green);"></div>
+
+  <div style="display:flex; color:var(--green); font-size: 24px; margin-top: 24px; margin-left: 14px;">Analysis result
+    and refactoring:
+  </div>
+
+  <select id="sortOptions" class="select">
+    <option value="testSmell">Order by Smell Type</option>
+    <option value="line">Order by Position in Code</option>
+  </select>
+  <ul id="testSmellsList" class="smells-list">
+    <!-- Content of the testSmellsList div goes here -->
+  </ul>
+  <div class="code-container" class="line-numbers">
+    <div style="display:flex; color:var(--green); font-size: 20px;">Original Code:
+    </div>
+    <div style="display:flex; color:var(--green); font-size: 20px;">Refactored Code:
+    </div>
+  </div>
+
+  <div class="code-container" class="line-numbers">
+    <div style="position: relative; overflow-x: auto; min-height: 100px; display: grid;">
+      <button class="copy-button" onclick="copyToClipboard('originalCodePre', this)">
+        <!doctype html>
+        <svg viewBox="304.219 221.26 16 16" width="24" height="24" style="fill: var(--bg);">
+          <path
+            d="M 304.219 228.01 C 304.219 227.044 305.003 226.26 305.969 226.26 L 307.469 226.26 C 308.047 226.26 308.408 226.885 308.119 227.385 C 307.985 227.617 307.737 227.76 307.469 227.76 L 305.969 227.76 C 305.831 227.76 305.719 227.872 305.719 228.01 L 305.719 235.51 C 305.719 235.648 305.831 235.76 305.969 235.76 L 313.469 235.76 C 313.607 235.76 313.719 235.648 313.719 235.51 L 313.719 234.01 C 313.719 233.433 314.344 233.072 314.844 233.36 C 315.076 233.494 315.219 233.742 315.219 234.01 L 315.219 235.51 C 315.219 236.476 314.436 237.26 313.469 237.26 L 305.969 237.26 C 305.003 237.26 304.219 236.476 304.219 235.51 L 304.219 228.01 Z"
+            style="fill: var(--text);"></path>
+          <path
+            d="M 309.219 223.01 C 309.219 222.044 310.003 221.26 310.969 221.26 L 318.469 221.26 C 319.435 221.26 320.219 222.044 320.219 223.01 L 320.219 230.51 C 320.219 231.476 319.436 232.26 318.469 232.26 L 310.969 232.26 C 310.003 232.26 309.219 231.476 309.219 230.51 L 309.219 223.01 Z M 310.969 222.76 C 310.831 222.76 310.719 222.872 310.719 223.01 L 310.719 230.51 C 310.719 230.648 310.831 230.76 310.969 230.76 L 318.469 230.76 C 318.607 230.76 318.719 230.648 318.719 230.51 L 318.719 223.01 C 318.719 222.872 318.607 222.76 318.469 222.76 L 310.969 222.76 Z"
+            style="fill: var(--text);"></path>
+        </svg>
+      </button>
+      <pre id="originalCodePre" class="line-numbers original" data-line="15-25"
+        style="border-radius: 5px;  overflow-y: clip;"><code id="originalCode" class="language-java"></code></pre>
+    </div>
+    <div style="position: relative;  overflow-x: auto; min-height: 100px; display: grid;">
+      <button class="copy-button" onclick="copyToClipboard('refactoredCodePre', this)">
+        <!doctype html>
+        <svg viewBox="304.219 221.26 16 16" width="24" height="24" style="fill: var(--bg);">
+          <path
+            d="M 304.219 228.01 C 304.219 227.044 305.003 226.26 305.969 226.26 L 307.469 226.26 C 308.047 226.26 308.408 226.885 308.119 227.385 C 307.985 227.617 307.737 227.76 307.469 227.76 L 305.969 227.76 C 305.831 227.76 305.719 227.872 305.719 228.01 L 305.719 235.51 C 305.719 235.648 305.831 235.76 305.969 235.76 L 313.469 235.76 C 313.607 235.76 313.719 235.648 313.719 235.51 L 313.719 234.01 C 313.719 233.433 314.344 233.072 314.844 233.36 C 315.076 233.494 315.219 233.742 315.219 234.01 L 315.219 235.51 C 315.219 236.476 314.436 237.26 313.469 237.26 L 305.969 237.26 C 305.003 237.26 304.219 236.476 304.219 235.51 L 304.219 228.01 Z"
+            style="fill: var(--text);"></path>
+          <path
+            d="M 309.219 223.01 C 309.219 222.044 310.003 221.26 310.969 221.26 L 318.469 221.26 C 319.435 221.26 320.219 222.044 320.219 223.01 L 320.219 230.51 C 320.219 231.476 319.436 232.26 318.469 232.26 L 310.969 232.26 C 310.003 232.26 309.219 231.476 309.219 230.51 L 309.219 223.01 Z M 310.969 222.76 C 310.831 222.76 310.719 222.872 310.719 223.01 L 310.719 230.51 C 310.719 230.648 310.831 230.76 310.969 230.76 L 318.469 230.76 C 318.607 230.76 318.719 230.648 318.719 230.51 L 318.719 223.01 C 318.719 222.872 318.607 222.76 318.469 222.76 L 310.969 222.76 Z"
+            style="fill: var(--text);"></path>
+        </svg>
+      </button>
+      <pre id="refactoredCodePre" class="line-numbers refactored" data-line="12"
+        style="border-radius: 5px; overflow-y: clip;"><code id="refactoredCode" class="language-java"></code></pre>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+
+  <script src="themeManager.js"></script>
+
+</body>
+
+</html>
