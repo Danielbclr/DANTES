@@ -1,60 +1,16 @@
 package com.arieslab.DANTES.enums;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
 /**
  * A type-safe enum representing all detectable test smells.
- * It holds all relevant metadata, allowing the backend to send a rich object
- * to the frontend, which simplifies the client-side logic.
+ *
+ * The backend is only concerned with the type, not its presentation.
+ * Jackson will serialize these to their string names by default (e.g., "ASSERTION_ROULETTE"),
+ * which is exactly what the frontend now uses as a key.
  */
-@Getter
-@RequiredArgsConstructor
-@JsonFormat(shape = JsonFormat.Shape.OBJECT) // Tells Jackson to serialize the whole enum object
 public enum SmellType {
-
-    ASSERTION_ROULETTE(
-            "Assertion Roulette",
-            "Add Assertion Explanation",
-            "assertion-roulette",
-            "Multiple unexplained assertions in a test method hinder readability and understanding, making test failures unclear."
-    ),
-    CONSTRUCTOR_INITIALIZATION(
-            "Constructor Initialization",
-            "Use @BeforeEach",
-            "constructor-initialization",
-            "Test suites should avoid using constructors; fields should be initialized in a setUp()/@BeforeEach method."
-    ),
-    EMPTY_TEST(
-            "Empty Test",
-            "Add Implementation",
-            "empty-test",
-            "Empty test methods pose risks; JUnit passes them, potentially masking behavior-breaking changes in production classes."
-    );
-    // ... Add all other smell types here following the same pattern
-
-    private final String displayName;
-    private final String refactorAction;
-    private final String endpointSlug;
-    private final String description;
-
-    /**
-     * This getter is automatically used by Jackson during serialization.
-     * It adds the enum's constant name (e.g., "ASSERTION_ROULETTE") to the JSON object.
-     * @return The name of the enum constant.
-     */
-    public String getName() {
-        return this.name();
-    }
-
-    // This allows Jackson to find an enum by its displayName if needed, though not required for serialization.
-    public static SmellType fromDisplayName(String name) {
-        for (SmellType smell : SmellType.values()) {
-            if (smell.displayName.equalsIgnoreCase(name)) {
-                return smell;
-            }
-        }
-        return null;
-    }
+    ASSERTION_ROULETTE,
+    CONSTRUCTOR_INITIALIZATION,
+    EMPTY_TEST,
+    CONDITIONAL_TEST_LOGIC
+    // ... Add all other smell types here
 }

@@ -42,15 +42,12 @@ public class DetectionService {
 
         System.out.println("Detection Service starting analysis with " + smellDetectors.size() + " detector(s).");
 
-        // Use Java Streams to call each detector and collect all results into one list.
         return smellDetectors.stream()
                 .flatMap(detector -> {
                     try {
-                        // Pass the code to each detector.
                         return detector.findSmells(javaCode).stream();
                     } catch (Exception e) {
-                        // Gracefully handle errors in a single detector without crashing the app.
-                        System.err.println("Error running detector '" + detector.getSmellType().getDisplayName() + "': " + e.getMessage());
+                        System.err.println("Error running detector '" + detector.getSmellType().name() + "': " + e.getMessage());
                         return Stream.empty();
                     }
                 })
