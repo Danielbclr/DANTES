@@ -28,9 +28,6 @@ var supportsES6 = (function () { try { new Function('(a=0)=>a'); return true } c
 
       const _clicked = _ => {
 
-        // Note: Pressed state is purposefully not linked to the mode setting.
-        // Initially the mode may be light or dark, but pressed state is always false.
-        // _setAttr(btn, 'aria-pressed', btn.getAttribute('aria-pressed') === 'false');
         _setAttr(btn, 'aria-clicked', btn.getAttribute('aria-clicked') === 'false');
 
         mode = mode === false;
@@ -68,13 +65,6 @@ var supportsES6 = (function () { try { new Function('(a=0)=>a'); return true } c
 
       };
 
-      // Using symbol defs in the HTML
-      //   const _getSvg = _ => `<svg class=${svgClass} aria-hidden=true focusable=false>
-      //   <use class="${name}-${dark}" xlink:href="#icon-${name}-${dark}"></use>
-      //   <use class="${name}-${light}" xlink:href="#icon-${name}-${light}"></use>
-      // </svg>`;
-
-      // Using an embedded SVG - So I can include this JS into other CodePen projects
       const _getSvg = _ => `<svg class="${svgClass}" aria-hidden=true focusable=false viewbox="0 0 960 960">
   <g class="${name}-${light}">
     <circle cx="476" cy="480" r="458" fill-opacity=".25"/>
@@ -120,7 +110,7 @@ var supportsES6 = (function () { try { new Function('(a=0)=>a'); return true } c
 
         // Note: Button is added at the end of the HTML to avoid preceding an accessibility skip-to-content link.
         // Skip-to-content links should always be the first actionable asset on a web page.
-        body.appendChild(btn);
+        document.getElementById('actions-container').appendChild(btn);
 
         if (mode) {
           console.log("light");

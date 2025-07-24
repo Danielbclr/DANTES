@@ -1,462 +1,502 @@
+/* =========================
+   CSS CUSTOM PROPERTIES
+   ========================= */
 :root {
-      --backbg: #222222;
-      --bg: #2D2D2D;
-      --green: #6BAB90;
-      --text: #FFF8E8;
-      --highlight-red: #d607002d;
-      --highlight-green: #008a302c;
-      --link-visited: #aaaaaa;
-      --link-hover: #bbbbbb;
-      -webkit-transition: all 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
-      transition: all 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
-    }
+  /* Color Palette */
+  --color-background: #222222;
+  --color-surface: #2D2D2D;
+  --color-primary: #6BAB90;
+  --color-text: #FFF8E8;
+  --color-highlight-error: #d607002d;
+  --color-highlight-success: #008a302c;
+  --color-link-visited: #aaaaaa;
+  --color-link-hover: #bbbbbb;
 
-    a,
-    h1,
-    body,
-    p,
-    form,
-    input {
-      font-family: Arial, sans-serif;
-      /* Change the font family here */
-    }
+  /* Transitions */
+  --transition-default: all 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
+  --transition-fast: all 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
+  --transition-opacity: opacity 0.3s ease-out;
 
-    form{
-      display: inline-block;
-    }
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 6px;
+  --spacing-md: 10px;
+  --spacing-lg: 14px;
+  --spacing-xl: 16px;
+  --spacing-2xl: 20px;
+  --spacing-3xl: 32px;
 
-    h1 {
-      color: var(--green);
-      margin-left: 10px;
-      font-family: 'Work Sans', sans-serif;
-      font-weight: 900;
-      font-variant: small-caps;
-      font-size: 36px;
-    }
+  /* Border Radius */
+  --radius-sm: 5px;
+  --radius-md: 6px;
+  --radius-full: 50%;
 
-    .method {
-      font-family: monospace;
-    }
+  /* Font Sizes */
+  --font-size-sm: 12px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 36px;
+}
 
-    .smell {
-      color: var(--green);
-    }
+/* =========================
+   BASE STYLES
+   ========================= */
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
 
-    .smell {
-      font-size: 18px;
-      padding-top: 8px;
-    }
+a,
+h1,
+p,
+form,
+input {
+  font-family: Arial, sans-serif;
+}
 
-    body {
-      background-color: var(--backbg);
-      color: var(--text);
-      font-family: Arial, sans-serif;
-    }
+/* =========================
+   TYPOGRAPHY
+   ========================= */
+h1 {
+  color: var(--color-primary);
+  margin-left: var(--spacing-md);
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 900;
+  font-variant: small-caps;
+  font-size: var(--font-size-3xl);
+}
 
-    #textbox {
-      background-color: var(--bg);
-      padding: 10px;
-      margin: 10px;
-      height: 200px;
-      margin-right: 10%;
-      display: flex;
-    }
+.method {
+  font-family: monospace;
+}
 
-    /* Add styles for the textarea */
-    textarea {
-      background-color: var(--bg);
-      color: var(--text);
-      padding-left: 10px;
-      padding-top: 10px;
-      margin-left: 10px;
-      margin-bottom: 6px;
-      height: 40vh;
-      /* Increase the height */
-      width: 92vw;
-      /* Set a width */
-      border-radius: 5px;
-      /* Round edges */
-      border: none;
-      /* Remove the border */
-      resize: vertical;
-      /* Allow vertical resizing */
-      font-family: Arial, sans-serif;
-      font-size: 16px;
-      border-width: 2px;
-      border-style: solid;
-      border-color: var(--green);
-      display: flex;
-    }
+.smell {
+  color: var(--color-primary);
+  font-size: var(--font-size-lg);
+  padding-top: 8px;
+}
 
-    /* Adjust the submit button style */
-    input[type="submit"] {
-      font-weight: 550;
-      padding: 12px 40px;
-      font-size: 20px;
-      background-color: var(--green);
-      color: var(--bg);
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-left: 0px;
-      margin-bottom: 16px;
-      -webkit-transition: all 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
-      transition: all 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
-      border-width: 2px;
-      border-style: solid;
-      border-color: var(--bg);
-    }
+/* =========================
+   FORM ELEMENTS
+   ========================= */
+form {
+  display: inline-block;
+}
 
-    input[type="submit"]:hover {
-      opacity: 90%;
-      border-color: var(--text);
-    }
+textarea {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) var(--spacing-md);
+  margin: 0 0 var(--spacing-sm) var(--spacing-md);
+  height: 40vh;
+  width: 92vw;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--color-primary);
+  resize: vertical;
+  font-family: Arial, sans-serif;
+  font-size: var(--font-size-base);
+  display: flex;
+  box-sizing: border-box;
+}
 
-    .file-button {
-      padding: 10px 30px;
-      font-size: 16px;
-      background-color: var(--bg);
-      color: var(--text);
-      opacity: 90%;
-      cursor: pointer;
-      margin-left: 0px;
-      margin-bottom: 16px;
-      border-radius: 5px;
-      -webkit-transition: all 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
-      transition: all 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
-      border-width: 1px;
-      border-style: solid;
-      border-color: var(--text);
-    }
+/* =========================
+   BUTTON STYLES
+   ========================= */
+.btn {
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+}
 
-    .file-button:hover {
-      opacity: 70%;
-      border-style: solid;
-      border-color: var(--green);
-    }
+/* Submit Button */
+input[type="submit"] {
+  @extend .btn;
+  font-weight: 550;
+  padding: 12px 40px;
+  font-size: var(--font-size-xl);
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border-radius: var(--radius-md);
+  margin: 0 0 var(--spacing-xl) 0;
+  border: 2px solid var(--color-surface);
+}
 
-    /* Adjust the submit button style */
-    .button {
-      padding: 6px 16px;
-      background-color: var(--green);
-      color: var(--backbg);
-      border: solid;
-      border-color: var(--backbg);
-      border-width: 1px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-left: 16px;
-      margin-bottom: 4px;
-      -webkit-transition: all 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
-      transition: all 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
-    }
+input[type="submit"]:hover {
+  opacity: 0.9;
+  border-color: var(--color-text);
+}
 
-    .button:hover {
-      border-width: 1px;
-      border-style: solid;
-      border-color: var(--text);
-      opacity: 75%;
-    }
+/* File Button */
+.file-button {
+  padding: 10px 30px;
+  font-size: 16px;
+  background-color: var(--bg);
+  color: var(--text);
+  opacity: 90%;
+  cursor: pointer;
+  margin-left: 0px;
+  margin-bottom: 16px;
+  border-radius: 5px;
+  -webkit-transition: all 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
+  transition: all 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--text);
+}
 
-    .button-refactored {
-      padding: 6px 16px;
-      background-color: var(--bg);
-      color: var(--text);
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-left: 16px;
-      pointer-events: none;
-      margin-bottom: 4px;
-      border-width: 1px;
-      border-style: solid;
-      border-color: var(--backbg);
-    }
+.file-button:hover {
+  opacity: 70%;
+  border-style: solid;
+  border-color: var(--green);
+}
 
-    .refactorAll {
-      padding: 12px 32px;
-      background-color: var(--bg);
-      color: var(--text);
-      border: solid;
-      border-color: var(--text);
-      border-width: 1px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-left: 0px;
-      margin-bottom: 6px;
-      -webkit-transition: all 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
-      transition: all 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
-      font-size: 16px;
-    }
+/* Generic Action Button */
+.button {
+  padding: 6px 16px;
+  background-color: var(--green);
+  color: var(--backbg);
+  border: solid;
+  border-color: var(--backbg);
+  border-width: 1px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 16px;
+  margin-bottom: 4px;
+  -webkit-transition: all 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
+  transition: all 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
+}
 
-    .refactorAll:hover {
-      border-width: 1px;
-      border-style: solid;
-      border-color: var(--green);
-    }
+.button:hover {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--text);
+  opacity: 75%;
+}
 
-    .refactorAll-clicked {
-      border-color: var(--backbg);
-      cursor: pointer;
-      pointer-events: none;
-    }
+.button-refactored {
+  padding: 6px 16px;
+  background-color: var(--bg);
+  color: var(--text);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 16px;
+  pointer-events: none;
+  margin-bottom: 4px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--backbg);
+}
 
-    .select {
-      font-size: 12px;
-      padding: 6px 16px;
-      background-color: var(--bg);
-      color: var(--text);
-      border-radius: 5px;
-      margin-top: 10px;
-      margin-left: 15px;
-      border-width: 1px;
-      border-style: solid;
-      border-color: var(--green);
-    }
+/* Refactor All Button */
+.refactorAll {
+  @extend .btn;
+  padding: 12px var(--spacing-3xl);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-text);
+  margin: 0 0 var(--spacing-sm) 0;
+  font-size: var(--font-size-base);
+}
 
-    .smells-list {
-      list-style: none;
-      background-color: var(--bg);
-      color: var(--text);
-      flex-direction:
-        column;
-      display: flex;
-      background-color: var(--bg);
-      padding: 32px;
-      margin-left: 14px;
-      margin-right: 40px;
-      margin-top: 14px;
-      font-size: 16px;
-      margin-bottom: 28px;
-      border-radius: 5px;
-    }
+.refactorAll:hover {
+  border-color: var(--color-primary);
+}
 
-    .smells-list-refactored {
-      border-color: var(--green);
-    }
+.refactorAll-clicked {
+  border-color: var(--color-background);
+  pointer-events: none;
+}
 
-    .code-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-left: 14px;
-      margin-right: 40px;
-      margin-bottom: 4px;
-    }
+/* Select Dropdown */
+.select {
+  font-size: var(--font-size-sm);
+  padding: var(--spacing-sm) var(--spacing-xl);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  margin: var(--spacing-md) 0 0 15px;
+}
 
-    .code-container pre {
-      margin: 0;
-    }
+/* =========================
+   LAYOUT COMPONENTS
+   ========================= */
+.actions-container {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  z-index: 10;
+  display: flex;
+  gap: var(--spacing-md);
+}
 
-    .code-container #originalCode {
-      /* background-color: #282c34; */
-      color: #abb2bf;
-    }
+/* Code Container Grid */
+.code-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-2xl);
+  margin: 0 40px var(--spacing-xs) var(--spacing-lg);
+}
 
-    .code-container #refactoredCode {
-      /* background-color: #282c34; */
-      color: #abb2bf;
-    }
+.code-container pre {
+  margin: 0;
+}
 
-    .data-line {
-      background-color: rgba(223, 8, 8, 0.568);
-    }
+/* Smells List */
+.smells-list {
+  list-style: none;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-3xl);
+  margin: var(--spacing-lg) 40px 28px var(--spacing-lg);
+  font-size: var(--font-size-base);
+  border-radius: var(--radius-sm);
+}
 
-    .original .line-highlight {
-      background-color: var(--highlight-red);
-    }
+.smells-list-refactored {
+  border-color: var(--color-primary);
+}
 
-    .refactored .line-highlight {
-      background-color: var(--highlight-green);
-    }
+/* =========================
+   CODE DISPLAY
+   ========================= */
+.code-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
 
-    a:link {
-      color: #5fa1828f;
-    }
+.code-wrapper > pre[class*="language-"] {
+  margin-top: 0;
+  counter-reset: initial;
+  overflow: auto;
+}
 
-    a:link:hover {
-      color: var(--link-hover);
-    }
+/* Code Colors */
+.code-container #originalCode,
+.code-container #refactoredCode {
+  color: #abb2bf;
+}
 
-    a:visited {
-      color: var(--link-visited);
-    }
+/* Line Highlighting */
+.original .line-highlight {
+  background-color: var(--color-highlight-error);
+}
 
-    .actions_btn-mode {
-      --fromEdge: .5rem;
-      position: fixed;
-      z-index: 5;
-      top: var(--fromEdge);
-      right: var(--fromEdge);
-      width: 3rem;
-      height: 3rem;
-      border: 0;
-      background-color: transparent;
-      color: inherit;
-    }
+.refactored .line-highlight {
+  background-color: var(--color-highlight-success);
+}
 
-    @media (min-width: 768px) {
-      .actions_btn-mode {
-        --fromEdge: 1.5rem;
-      }
-    }
+.data-line {
+  background-color: rgba(223, 8, 8, 0.568);
+}
 
-    /* Switch icon between dark &amp; light */
-    .actions_svg-mode>* {
-      transition: opacity .3s ease-out;
-    }
+/* =========================
+   COPY FUNCTIONALITY
+   ========================= */
+.copy-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-background);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm);
+  cursor: pointer;
+  z-index: 10;
+  transition: var(--transition-fast);
+}
 
-    [data-lightMode="light"] .mode-dark,
-    [data-lightMode="dark"] .mode-light {
-      opacity: 1;
-    }
+.copy-button:hover {
+  border-color: var(--color-text);
+}
 
-    [data-lightMode="light"] .mode-light,
-    [data-lightMode="dark"] .mode-dark {
-      opacity: 0;
-    }
+.copy-button-clicked {
+  border-color: var(--color-primary);
+}
 
-    .code-wrapper {
-      position: relative;
-      overflow: hidden;
-      border-radius: 8px;
-    }
+.copy-icon {
+  fill: var(--color-text);
+  width: var(--spacing-xl);
+  height: var(--spacing-xl);
+}
 
-    .code-wrapper>pre[class*="language-"] {
-      margin-top: 0;
-      counter-reset: initial;
-      overflow: auto;
-    }
+.check-icon {
+  fill: var(--color-primary);
+  width: var(--font-size-2xl);
+  height: var(--font-size-2xl);
+}
 
+/* =========================
+   INTERACTIVE ELEMENTS
+   ========================= */
+/* Links */
+a:link {
+  color: #5fa1828f;
+}
 
-    div.code-toolbar {
-      position: relative;
-      counter-reset: initial;
-      overflow: auto;
-    }
+a:link:hover {
+  color: var(--color-link-hover);
+}
 
-    div.code-toolbar>.toolbar {
-      position: absolute;
-      z-index: 10;
-      top: .3em;
-      right: .2em;
-      transition: opacity .3s ease-in-out;
-      opacity: 1
-    }
+a:visited {
+  color: var(--color-link-visited);
+}
 
-    div.code-toolbar>.toolbar>.toolbar-item {
-      display: inline-block
-    }
+/* Popup */
+.popup {
+  position: relative;
+  display: inline-block;
+  border: 0px solid var(--color-text);
+}
 
-    div.code-toolbar>.toolbar>.toolbar-item>a {
-      cursor: pointer
-    }
+.popup .popuptext {
+  visibility: hidden;
+  width: 240px;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  text-align: center;
+  border: 2px ridge var(--color-primary);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  position: absolute;
+  z-index: 1;
+  bottom: 1.5em;
+  left: 50%;
+  margin-left: -120px;
+}
 
-    /* feature styles for buttons */
+.popup:hover .popuptext {
+  visibility: visible;
+}
 
-    /* icon copy */
-    div.code-toolbar>.toolbar>.toolbar-item>button>span {
-      color: transparent;
-      background-color: #e6caa8;
-      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' d='M0 0h24v24H0z'%3E%3C/path%3E%3Cpath d='M7 6V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-3v3c0 .552-.45 1-1.007 1H4.007A1.001 1.001 0 0 1 3 21l.003-14c0-.552.45-1 1.007-1H7zM5.003 8L5 20h10V8H5.003zM9 6h8v10h2V4H9v2z' fill='currentColor'%3E%3C/path%3E%3C/svg%3E");
-      mask-repeat: no-repeat no-repeat;
-      mask-position: center right;
-    }
+/* =========================
+   THEME TOGGLE BUTTONS
+   ========================= */
+.actions_btn-mode,
+.language-toggle-button {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  cursor: pointer;
+  background-color: var(--color-background);
+  border: 2px solid transparent;
+  border-radius: var(--radius-full);
+  color: inherit;
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
 
-    /* hide icon copy */
-    div.code-toolbar>.toolbar>.toolbar-item>button[data-copy-state=copy-success]>span,
-    div.code-toolbar>.toolbar>.toolbar-item>button[data-copy-state=copy-success]:hover>span {
-      mask-image: none;
-      color: #e6caa8;
-      background-color: transparent;
-    }
+.actions_btn-mode:hover,
+.language-toggle-button:hover {
+  background-color: var(--color-primary);
+  opacity: 0.75;
+  border-color: var(--color-primary);
+}
 
-    /* color of "Copied!" */
-    .copy-to-clipboard-button[data-copy-state~=copy-success] span {
-      color: #e6caa8;
-    }
+/* Theme Icon Transitions */
+.actions_svg-mode > * {
+  transition: var(--transition-opacity);
+}
 
-    /* text copy is hidden */
-    .copy-to-clipboard-button[data-copy-state=copy] span {
-      color: transparent;
-    }
+[data-lightMode="light"] .mode-dark,
+[data-lightMode="dark"] .mode-light {
+  opacity: 1;
+}
 
-    /* default item color */
-    div.code-toolbar>.toolbar>.toolbar-item {
-      color: #e6caa8;
-    }
+[data-lightMode="light"] .mode-light,
+[data-lightMode="dark"] .mode-dark {
+  opacity: 0;
+}
 
-    /* remove toolbar items decoration*/
-    div.code-toolbar>.toolbar>.toolbar-item>a,
-    div.code-toolbar>.toolbar>.toolbar-item>button,
-    div.code-toolbar>.toolbar>.toolbar-item>span {
-      background-color: transparent;
-      border: 0;
-      box-shadow: none;
-    }
+/* Language Flag Icon */
+.language-flag-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: var(--radius-full);
+}
 
-    .copy-button {
-      border-radius: 5px;
-      position: absolute;
-      top: 0px;
-      right: 0px;
-      background-color: var(--bg);
-      color: #fff;
-      border: solid;
-      border-width: 1px;
-      border-color: var(--backbg);
-      padding: 5px;
-      cursor: pointer;
-      z-index: 10;
-      -webkit-transition: all 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
-      transition: all 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
-    }
+/* =========================
+   CODE TOOLBAR STYLES
+   ========================= */
+div.code-toolbar {
+  position: relative;
+  counter-reset: initial;
+  overflow: auto;
+}
 
-    .copy-button:hover {
-      border-color: var(--text);
-    }
+div.code-toolbar > .toolbar {
+  position: absolute;
+  z-index: 10;
+  top: 0.3em;
+  right: 0.2em;
+  transition: var(--transition-opacity);
+  opacity: 1;
+}
 
-    .copy-button-clicked {
-      border-color: var(--green);
-    }
+div.code-toolbar > .toolbar > .toolbar-item {
+  display: inline-block;
+  color: #e6caa8;
+}
 
-    .copy-icon {
-      fill: #fff;
-      width: 16px;
-      height: 16px;
-    }
+div.code-toolbar > .toolbar > .toolbar-item > a {
+  cursor: pointer;
+}
 
-    .check-icon {
-      fill: var(--green);
-      width: 24px;
-      height: 24px;
-    }
+/* Copy Button Styles in Toolbar */
+div.code-toolbar > .toolbar > .toolbar-item > button > span {
+  color: transparent;
+  background-color: #e6caa8;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' d='M0 0h24v24H0z'%3E%3C/path%3E%3Cpath d='M7 6V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-3v3c0 .552-.45 1-1.007 1H4.007A1.001 1.001 0 0 1 3 21l.003-14c0-.552.45-1 1.007-1H7zM5.003 8L5 20h10V8H5.003zM9 6h8v10h2V4H9v2z' fill='currentColor'%3E%3C/path%3E%3C/svg%3E");
+  mask-repeat: no-repeat no-repeat;
+  mask-position: center right;
+}
 
-    .popup {
-      position: relative;
-      display: inline-block;
-      border-width: 1px;
-      border-color: var(--text);
-    }
+div.code-toolbar > .toolbar > .toolbar-item > button[data-copy-state=copy-success] > span,
+div.code-toolbar > .toolbar > .toolbar-item > button[data-copy-state=copy-success]:hover > span {
+  mask-image: none;
+  color: #e6caa8;
+  background-color: transparent;
+}
 
-    .popup .popuptext {
-      visibility: hidden;
-      width: 240px; /* Increased width for a larger pop-up */
-      background-color: var(--bg);
-      color: var(--text);
-      text-align: center;
-      border-radius: 6px;
-      padding: 12px;
-      position: absolute;
-      z-index: 1;
-      bottom: 1.5em;
-      left: 50%;
-      margin-left: -120px;
-      border-style: ridge;
-      border-width: 2px;
-      border-color: var(--green);
-    }
+.copy-to-clipboard-button[data-copy-state~=copy-success] span {
+  color: #e6caa8;
+}
 
-    .popup:hover .popuptext {
-      visibility: visible;
-    }
+.copy-to-clipboard-button[data-copy-state=copy] span {
+  color: transparent;
+}
+
+/* Remove default toolbar styling */
+div.code-toolbar > .toolbar > .toolbar-item > a,
+div.code-toolbar > .toolbar > .toolbar-item > button,
+div.code-toolbar > .toolbar > .toolbar-item > span {
+  background-color: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+   ========================= */
+@media (min-width: 768px) {
+  .actions_btn-mode {
+    --fromEdge: 1.5rem;
+  }
+}

@@ -6,6 +6,24 @@
  * The keys (e.g., "ASSERTION_ROULETTE") match the enum 'name' property
  * sent from the backend, creating a clean and robust contract.
  */
+export const UI_TEXT = {
+    appTitle: "DANTES - Test Smell Detector",
+    placeholder: "Insert your test code here...",
+    detectButton: "Detect",
+    uploadButton: "Upload a file",
+    languageLabel: "Language:",
+    analysisTitle: "Analysis result and refactoring:",
+    sortSmell: "Order by Smell Type",
+    sortLine: "Order by Position in Code",
+    originalCode: "Original Code:",
+    refactoredCode: "Refactored Code:",
+    errorProcessing: "Error occurred while processing input. Check the console for details.",
+    errorNoCode: "Please enter some Java code to analyze.",
+    successMessage: "No test smells found!",
+    refactoring: "Refactoring...",
+    refactored: "Refactored!",
+    refactorError: "An error occurred during refactoring. Check the console for details."
+};
 export const SMELL_TEXT_RESOURCES = {
     ASSERTION_ROULETTE: {
         displayName: "Assertion Roulette",
