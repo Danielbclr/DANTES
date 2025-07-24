@@ -142,13 +142,22 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            // CHANGE 1: Initialize each smell with an `isRefactored` state.
             state.testSmells = (data.retVal || []).map(smell => ({
                 ...smell,
                 isRefactored: false
             }));
 
-            ui.responseDiv.textContent = data.message;
+            // Construct the response message dynamically on the frontend.
+            const smellCount = state.testSmells.length;
+            if (smellCount === 0) {
+                ui.responseDiv.textContent = state.textResources.detectionSuccessNone;
+            } else if (smellCount === 1) {
+                ui.responseDiv.textContent = state.textResources.detectionSuccessOne;
+            } else if (smellCount > 1) {
+                ui.responseDiv.textContent = state.textResources.detectionSuccessOther.replace('{count}', smellCount);
+            }
+            // If smellCount is 0, the responseDiv remains empty, as renderSmellList will show the success message.
+
             renderSmellList();
             Prism.highlightElement(ui.originalCodeContainer);
         })
@@ -182,25 +191,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!resources) {
             console.warn(`No text resource found for smell type: '${smell.type}'. Using a default.`);
+            // Use externalized strings for the fallback
             resources = {
-                displayName: smell.type || 'Unknown Smell',
-                description: 'No description is available for this smell type.',
-                refactorAction: 'Refactor'
+                displayName: state.textResources.unknownSmell || smell.type,
+                description: state.textResources.unknownSmellDescription,
+                refactorAction: state.textResources.unknownSmellAction
             };
         }
 
         const description = document.createElement('a');
+
+        // Use a template string from the language file
+        const template = state.textResources.smellDescriptionTemplate || 'detected in method <a class="method">{method}</a> at line {line}.';
+        const smellDetails = template
+            .replace('{method}', smell.method)
+            .replace('{line}', smell.lineBegin);
+
         description.innerHTML = `
             <span class="popup">
                 <a class="smell"><b>${resources.displayName}</b></a>
                 <span class="popuptext">${resources.description}</span>
             </span>
-            detected in method <a class="method">${smell.method}</a> at line ${smell.lineBegin}.
+            ${smellDetails}
         `;
 
         const button = document.createElement("button");
 
-        // CHANGE 2: Render the button based on the `isRefactored` state.
+        // Render the button based on the `isRefactored` state.
         if (smell.isRefactored) {
             button.className = "button-refactored";
             button.textContent = state.textResources.refactored;

@@ -5,7 +5,6 @@ import com.arieslab.DANTES.service.DetectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,18 +21,11 @@ public class DetectionController {
 
     private final DetectionService detectionService;
 
-    // Use constructor injection - it's the recommended way to inject dependencies.
     @Autowired
     public DetectionController(DetectionService detectionService) {
         this.detectionService = detectionService;
     }
 
-    /**
-     * An example endpoint that returns a JSON object.
-     * Spring Boot automatically converts the returned Map into a JSON response.
-     *
-     * @return A Map representing a JSON object.
-     */
     @PostMapping("process-input")
     public ResponseEntity<Map<String, Object>> processInput(@RequestParam("inputText") String inputText) {
         Map<String, Object> response = new HashMap<>();
@@ -41,10 +33,8 @@ public class DetectionController {
             // 1. Delegate the complex logic to the service layer
             List<TestSmell> smells = detectionService.detectSmells(inputText);
 
-            // 2. Build the response object. Spring will serialize this map to JSON.
-            // NOTE: We are returning the list of smells directly, not as a string.
-            // This is a cleaner approach than the original Node.js server.
-            response.put("message", "Code processed successfully. " + smells.size() + " smells found.");
+            // 2. Build the response object. The 'message' key is removed.
+            // The frontend is now responsible for creating user-facing messages.
             response.put("retVal", smells); // 'retVal' matches the old key for easier frontend migration.
 
             return ResponseEntity.ok(response);

@@ -14,7 +14,14 @@ export const UI_TEXT = {
     successMessage: "Nenhum test smell encontrado!",
     refactoring: "Refatorando...",
     refactored: "Refatorado!",
-    refactorError: "Ocorreu um erro durante a refatoração. Verifique o console para detalhes."
+    refactorError: "Ocorreu um erro durante a refatoração. Verifique o console para detalhes.",
+    detectionSuccessNone: "Código processado com sucesso. Nenhum smell encontrado.",
+    detectionSuccessOne: "Código processado com sucesso. 1 smell encontrado.",
+    detectionSuccessOther: "Código processado com sucesso. {count} smells encontrados.",
+    smellDescriptionTemplate: 'detectado no método <a class="method">{method}</a> na linha {line}.',
+    unknownSmell: 'Smell Desconhecido',
+    unknownSmellDescription: 'Nenhuma descrição está disponível para este tipo de smell.',
+    unknownSmellAction: 'Refatorar'
 };
 
 export const SMELL_TEXT_RESOURCES = {

@@ -22,7 +22,14 @@ export const UI_TEXT = {
     successMessage: "No test smells found!",
     refactoring: "Refactoring...",
     refactored: "Refactored!",
-    refactorError: "An error occurred during refactoring. Check the console for details."
+    refactorError: "An error occurred during refactoring. Check the console for details.",
+    detectionSuccessNone: "Code processed successfully. No smells found!",
+    detectionSuccessOne: "Code processed successfully. 1 smell found.",
+    detectionSuccessOther: "Code processed successfully. {count} smells found.",
+    smellDescriptionTemplate: 'detected in method <a class="method">{method}</a> at line {line}.',
+    unknownSmell: 'Unknown Smell',
+    unknownSmellDescription: 'No description is available for this smell type.',
+    unknownSmellAction: 'Refactor',
 };
 export const SMELL_TEXT_RESOURCES = {
     ASSERTION_ROULETTE: {

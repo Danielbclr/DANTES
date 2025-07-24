@@ -4,6 +4,8 @@
 <head>
   <title>DANTES</title>
 
+  <link rel="icon" type="image/png" href="svg/dantes_logo.png">
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.css" />
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-highlight/prism-line-highlight.css" />
@@ -37,8 +39,7 @@
 
   <div id="response" style="display:flex; margin-left: 14px; color: var(--green);"></div>
 
-  <div style="display:flex; color:var(--green); font-size: 24px; margin-top: 24px; margin-left: 14px;">Analysis result
-    and refactoring:
+  <div id="analysis-title" style="display:flex; color:var(--green); font-size: 24px; margin-top: 24px; margin-left: 14px;">
   </div>
 
   <select id="sortOptions" class="select">
@@ -49,10 +50,8 @@
     <!-- Content of the testSmellsList div goes here -->
   </ul>
   <div class="code-container" class="line-numbers">
-    <div style="display:flex; color:var(--green); font-size: 20px;">Original Code:
-    </div>
-    <div style="display:flex; color:var(--green); font-size: 20px;">Refactored Code:
-    </div>
+    <div id="original-code-title" style="display:flex; color:var(--green); font-size: 20px;"> </div>
+    <div id="refactored-code-title" style="display:flex; color:var(--green); font-size: 20px;"></div>
   </div>
 
   <div class="code-container" class="line-numbers">

@@ -40,10 +40,9 @@
         document.querySelector('#sortOptions option[value="testSmell"]').textContent = txt.sortSmell;
         document.querySelector('#sortOptions option[value="line"]').textContent = txt.sortLine;
         const titles = document.querySelectorAll('.code-container .font-size-20');
-        if (titles.length >= 2) {
-            titles[0].textContent = txt.originalCode;
-            titles[1].textContent = txt.refactoredCode;
-        }
+        document.getElementById('analysis-title').textContent = txt.analysisTitle;
+        document.getElementById('original-code-title').textContent = txt.originalCode;
+        document.getElementById('refactored-code-title').textContent = txt.refactoredCode;
     }
 
     function updateLanguageToggleIcon() {
