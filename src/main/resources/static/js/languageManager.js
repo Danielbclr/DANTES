@@ -26,7 +26,7 @@
             localStorage.setItem('preferredLanguage', lang);
         } catch (error) {
             console.error(`Failed to load language file for '${lang}'. Defaulting to English.`, error);
-            const enModule = await import('./ui-text-en.js');
+            const enModule = await import('../ui-text-en.js');
             state.textResources = { ...enModule.SMELL_TEXT_RESOURCES, ...enModule.UI_TEXT };
         }
     }
