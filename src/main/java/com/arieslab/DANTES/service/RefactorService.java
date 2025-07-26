@@ -53,7 +53,7 @@ public class RefactorService {
         if (strategy == null) {
             System.err.println("No refactoring strategy found for smell type: " + smellType);
             // On failure, return a response with the original code and a failure message.
-            return new RefactorResponse(javaCode, List.of(), "No refactoring strategy available for this smell.");
+            return new RefactorResponse(javaCode, List.of(), "No refactoring strategy available for this smell.", 0);
         }
 
         System.out.println("Executing refactoring strategy for: " + smellType);

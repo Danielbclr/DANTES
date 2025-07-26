@@ -10,9 +10,9 @@ import com.github.javaparser.ast.expr.LambdaExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * and adds a descriptive lazy message to it, making the test failure
  * easier to diagnose.
  */
+@Slf4j // <-- ADD THIS ANNOTATION
 @Component
 public class AssertionRouletteRefactor implements ITestSmellRefactor {
 
@@ -34,18 +35,21 @@ public class AssertionRouletteRefactor implements ITestSmellRefactor {
 
     @Override
     public RefactorResponse refactor(String javaCode, int lineOfSmell) {
+        log.info("Starting Assertion Roulette refactoring for smell at line: {}", lineOfSmell);
         try {
             CompilationUnit cu = StaticJavaParser.parse(javaCode);
 
             // Step 1: Find the specific AST node to be refactored.
+            log.debug("Searching for refactorable assertion node at line {}", lineOfSmell);
             Optional<MethodCallExpr> targetNodeOpt = findNodeToRefactor(cu, lineOfSmell);
 
             if (targetNodeOpt.isEmpty()) {
-                // Node not found or already refactored, return original code.
-                return new RefactorResponse(javaCode, List.of(), "Target for refactoring not found or already refactored.");
+                log.warn("Could not find a target for Assertion Roulette refactoring at line {}. It might already have a message or is not an assertion.", lineOfSmell);
+                return new RefactorResponse(javaCode, List.of(), "Target for refactoring not found or already refactored.", 0);
             }
 
             MethodCallExpr targetNode = targetNodeOpt.get();
+            log.debug("Found target node: '{}'. Proceeding with modification.", targetNode);
 
             // Step 2: Perform the modification on the AST node.
             LambdaExpr lazyMessage = new LambdaExpr(
@@ -58,16 +62,15 @@ public class AssertionRouletteRefactor implements ITestSmellRefactor {
             String refactoredCode = cu.toString();
 
             // Step 4: Find the line number of the modified node in the *new* string.
-            // This is more reliable because the modified node's string is more unique.
-            int finalLineNumber = findLineNumberOfNode(refactoredCode, targetNode.toString());
-            List<Integer> changedLines = (finalLineNumber != -1) ? List.of(finalLineNumber) : List.of();
+            List<Integer> changedLines = (lineOfSmell != -1) ? List.of(lineOfSmell) : List.of();
 
-            return new RefactorResponse(refactoredCode, changedLines, "Refactoring successful.");
+            log.info("Successfully refactored Assertion Roulette at line {}. New highlighted line: {}", lineOfSmell, lineOfSmell);
+            return new RefactorResponse(refactoredCode, changedLines, "Refactoring successful.", 0);
 
         } catch (Exception e) {
-            System.err.println("Failed to refactor Assertion Roulette: " + e.getMessage());
-            e.printStackTrace();
-            return new RefactorResponse(javaCode, List.of(), "Refactoring failed: " + e.getMessage());
+            // IMPROVEMENT: Use the logger to record the exception, which is better than e.printStackTrace().
+            log.error("Failed to refactor Assertion Roulette for line {} due to an exception.", lineOfSmell, e);
+            return new RefactorResponse(javaCode, List.of(), "Refactoring failed: " + e.getMessage(), 0);
         }
     }
 
@@ -81,7 +84,6 @@ public class AssertionRouletteRefactor implements ITestSmellRefactor {
             @Override
             public void visit(MethodCallExpr n, Void arg) {
                 super.visit(n, arg);
-
                 boolean isOnLine = n.getRange().map(r -> r.begin.line == lineOfSmell).orElse(false);
                 if (isOnLine && n.getNameAsString().startsWith("assert")) {
                     boolean hasLazyMessage = n.getArguments().stream()

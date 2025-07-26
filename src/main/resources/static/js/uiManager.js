@@ -52,11 +52,11 @@ function showSuccessMessage(textResources) {
  * @param {object} textResources - The localized text strings.
  * @param {Function} onRefactorClick - The callback function to execute when a refactor button is clicked.
  */
-export function renderSmellList(testSmells, textResources, onRefactorClick) {
+export function renderSmellList(testSmells, textResources, highlightedLines, onRefactorClick) {
      ui.testSmellList.innerHTML = "";
 
      const linesWithSmells = testSmells.map(smell => `${smell.lineBegin}-${smell.lineEnd}`);
-     ui.originalCodePre.setAttribute('data-line', linesWithSmells.join(','));
+     ui.originalCodePre.setAttribute('data-line', highlightedLines.join(','));
 
      if (testSmells.length === 0) {
          showSuccessMessage(textResources);
@@ -122,7 +122,7 @@ function createTestSmellElement(smell, textResources, onRefactorClick) {
  * Updates the original code block with new content and highlights it.
  * @param {string} code - The Java code to display.
  */
-export function displayOriginalCode(code) {
+export function displayOriginalCode(code, highlightedLines) {
     ui.originalCodeContainer.textContent = code;
 }
 

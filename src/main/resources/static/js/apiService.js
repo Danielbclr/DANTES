@@ -24,11 +24,11 @@ export async function detectSmells(javaCode) {
  * @param {object} smell - The smell object to be refactored.
  * @returns {Promise<object>} A promise that resolves to the refactoring result from the server.
  */
-export async function performRefactor(originalCode, smell) {
+export async function performRefactor(code, smell) {
     const formData = new URLSearchParams();
-    formData.append('code', originalCode);
+    formData.append('code', code);
     formData.append('smellType', smell.type);
-    formData.append('line', smell.lineBegin);
+    formData.append('line', smell.actualLine);
 
     const response = await fetch('/api/refactor', {
         method: 'POST',

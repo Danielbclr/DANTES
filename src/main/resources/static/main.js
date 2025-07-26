@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
         testSmells: [],
         textResources: {},
         originalCode: "",
+        originalHighlightedLines: [],
+        refactoredCode: "",
+        refactoredLines: []
     };
 
     /**
@@ -33,10 +36,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const data = await api.detectSmells(javaCode);
-            state.testSmells = (data.retVal || []).map(smell => ({
+            state.testSmells = (data.retVal.detectedSmells || []).map(smell => ({
                 ...smell,
                 isRefactored: false
             }));
+
+            state.originalHighlightedLines = data.retVal.highlightedLines || [];
+            state.refactoredLines = [];
+            state.refactoredCode = data.retVal.refactoredCode || "";
+            ui.displayRefactoredCode(state.refactoredCode, state.refactoredLines);
 
             updateDetectionMessage();
             renderSmellList();
@@ -46,6 +54,21 @@ document.addEventListener('DOMContentLoaded', () => {
             ui.setResponseMessage(state.textResources.errorProcessing || "An error occurred during processing.");
         }
     }
+
+    function updateSmellPosition(lineBegin, lineChange) {
+        for(let smell of state.testSmells) {
+            if(smell.actualLine >= lineBegin) {
+                smell.actualLine += lineChange;
+            }
+        }
+
+        for (let i of state.refactoredLines) {
+            if (i >= lineBegin) {
+                i += lineChange;
+            }
+        }
+    }
+
 
     /**
      * Handles the click on a "Refactor" button. This function is passed as a
@@ -58,10 +81,15 @@ document.addEventListener('DOMContentLoaded', () => {
         button.textContent = state.textResources.refactoring || "Refactoring...";
 
         try {
-            const data = await api.performRefactor(state.originalCode, smell);
-            ui.displayRefactoredCode(data.refactoredCode, data.changedLines);
+            const data = await api.performRefactor(state.refactoredCode, smell);
 
-            const smellToUpdate = state.testSmells.find(s => s.lineBegin === smell.lineBegin && s.type === smell.type);
+
+            state.refactoredCode = data.refactoredCode;
+            updateSmellPosition(data.changedLines[-1], data.lineChange);
+            state.refactoredLines.push(...data.changedLines);
+            ui.displayRefactoredCode(state.refactoredCode, state.refactoredLines);
+
+            const smellToUpdate = state.testSmells.find(s => s.actualLine === smell.actualLine && s.type === smell.type);
             if (smellToUpdate) {
                 smellToUpdate.isRefactored = true;
             }
@@ -115,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * from the state and passes it to the UI manager.
      */
     function renderSmellList() {
-        ui.renderSmellList(state.testSmells, state.textResources, handleRefactorClick);
+        ui.renderSmellList(state.testSmells, state.textResources, state.originalHighlightedLines, handleRefactorClick);
     }
 
     /**

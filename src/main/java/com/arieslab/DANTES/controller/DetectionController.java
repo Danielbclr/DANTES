@@ -1,7 +1,9 @@
 package com.arieslab.DANTES.controller;
 
+import com.arieslab.DANTES.dto.DetectionResponse;
 import com.arieslab.DANTES.dto.TestSmell;
 import com.arieslab.DANTES.service.DetectionService;
+import com.github.javaparser.StaticJavaParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,12 +32,9 @@ public class DetectionController {
     public ResponseEntity<Map<String, Object>> processInput(@RequestParam("inputText") String inputText) {
         Map<String, Object> response = new HashMap<>();
         try {
-            // 1. Delegate the complex logic to the service layer
-            List<TestSmell> smells = detectionService.detectSmells(inputText);
+            DetectionResponse retVal = detectionService.detectSmells(inputText);
 
-            // 2. Build the response object. The 'message' key is removed.
-            // The frontend is now responsible for creating user-facing messages.
-            response.put("retVal", smells); // 'retVal' matches the old key for easier frontend migration.
+            response.put("retVal", retVal);
 
             return ResponseEntity.ok(response);
 

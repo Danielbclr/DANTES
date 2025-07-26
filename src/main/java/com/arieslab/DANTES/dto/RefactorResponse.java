@@ -20,4 +20,6 @@ public class RefactorResponse {
 
     /** An optional message describing the outcome of the operation. */
     private final String message;
+
+    private final Integer lineChange;
 }
