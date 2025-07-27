@@ -85,7 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
             state.refactoredCode = data.refactoredCode;
-            updateSmellPosition(data.changedLines[-1], data.lineChange);
+            const lineBegin = data.changedLines[0];
+            updateSmellPosition(lineBegin, data.lineChange);
             state.refactoredLines.push(...data.changedLines);
             ui.displayRefactoredCode(state.refactoredCode, state.refactoredLines);
 
