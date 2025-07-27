@@ -55,7 +55,7 @@ function showSuccessMessage(textResources) {
 export function renderSmellList(testSmells, textResources, highlightedLines, onRefactorClick) {
      ui.testSmellList.innerHTML = "";
 
-     const linesWithSmells = testSmells.map(smell => `${smell.lineBegin}-${smell.lineEnd}`);
+     const linesWithSmells = testSmells.map(smell => `${smell.line}-${smell.lineEnd}`);
      ui.originalCodePre.setAttribute('data-line', highlightedLines.join(','));
 
      if (testSmells.length === 0) {
@@ -91,7 +91,7 @@ function createTestSmellElement(smell, textResources, onRefactorClick) {
     const template = textResources.smellDescriptionTemplate || 'detected in method <a class="method">{method}</a> at line {line}.';
     const smellDetails = template
         .replace('{method}', smell.method)
-        .replace('{line}', smell.lineBegin);
+        .replace('{line}', smell.line);
 
     const description = document.createElement('a');
     description.innerHTML = `
@@ -134,6 +134,7 @@ export function displayOriginalCode(code, highlightedLines) {
 export function displayRefactoredCode(code, changedLines) {
     ui.refactoredCodeContainer.textContent = code;
     ui.refactoredCodePre.setAttribute('data-line', changedLines.join(','));
+    console.log(changedLines);
     Prism.highlightElement(ui.refactoredCodeContainer);
 }
 

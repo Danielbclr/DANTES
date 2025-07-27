@@ -17,7 +17,7 @@ import java.util.Set;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TestSmell {
 
-    private SmellType type; // Changed from String to our new powerful enum
+    private SmellType type;
     private String method;
     private int line;
     private int actualLine;

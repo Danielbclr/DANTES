@@ -41,34 +41,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 isRefactored: false
             }));
 
+            state.testSmells.forEach(element => {
+                console.log(`Detected smell: ${element.type} at line ${element.line} -- ${element.actualLine}`);
+            });
+
+            console.log(`Detected ${state.testSmells.length} test smells.`);
+
             state.originalHighlightedLines = data.retVal.highlightedLines || [];
             state.refactoredLines = [];
             state.refactoredCode = data.retVal.refactoredCode || "";
             ui.displayRefactoredCode(state.refactoredCode, state.refactoredLines);
 
             updateDetectionMessage();
-            renderSmellList();
+            ui.renderSmellList(state.testSmells, state.textResources, state.originalHighlightedLines, handleRefactorClick);
 
         } catch (error) {
             console.error('Error:', error);
             ui.setResponseMessage(state.textResources.errorProcessing || "An error occurred during processing.");
         }
     }
-
-    function updateSmellPosition(lineBegin, lineChange) {
-        for(let smell of state.testSmells) {
-            if(smell.actualLine >= lineBegin) {
-                smell.actualLine += lineChange;
-            }
-        }
-
-        for (let i of state.refactoredLines) {
-            if (i >= lineBegin) {
-                i += lineChange;
-            }
-        }
-    }
-
 
     /**
      * Handles the click on a "Refactor" button. This function is passed as a
@@ -83,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const data = await api.performRefactor(state.refactoredCode, smell);
 
-
             state.refactoredCode = data.refactoredCode;
             const lineBegin = data.changedLines[0];
             updateSmellPosition(lineBegin, data.lineChange);
@@ -95,13 +85,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 smellToUpdate.isRefactored = true;
             }
 
-            renderSmellList();
+            ui.renderSmellList(state.testSmells, state.textResources, state.originalHighlightedLines, handleRefactorClick);
 
         } catch (error) {
             console.error("Refactoring failed:", error);
             alert(state.textResources.refactorError || "Refactoring failed. See console for details.");
-            renderSmellList();
+            ui.renderSmellList(state.testSmells, state.textResources, state.originalHighlightedLines, handleRefactorClick);
         }
+    }
+
+    function updateSmellPosition(lineBegin, lineChange) {
+        console.log(`Updating smell positions for line change: ${lineChange} starting from line: ${lineBegin}`);
+        for(let smell of state.testSmells) {
+            if(smell.actualLine >= lineBegin) {
+                smell.actualLine += lineChange;
+                console.log(`Updated smell position: ${smell.type} to line ${smell.actualLine}`);
+            }
+        }
+
+        for( let i = 0; i < state.refactoredLines.length; i++) {
+            
+            if (state.refactoredLines[i] >= lineBegin) {
+                state.refactoredLines[i] += lineChange;
+                console.log(`Updated refactored line position: ${state.refactoredLines[i]}`);
+            }
+        }
+
+        console.log(`Refactored lines after update: ${state.refactoredLines}`);
+        ui.displayRefactoredCode(state.refactoredCode, state.refactoredLines);
     }
 
     /**
@@ -121,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return nameA.localeCompare(nameB);
         });
 
-        renderSmellList();
+        ui.renderSmellList(state.testSmells, state.textResources, state.originalHighlightedLines, handleRefactorClick);
     }
 
     /**
@@ -137,14 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         reader.readAsText(file);
         ui.ui.fileInput.value = ""; // Reset for next upload
-    }
-
-    /**
-     * A central function to render the smell list. It gets all necessary data
-     * from the state and passes it to the UI manager.
-     */
-    function renderSmellList() {
-        ui.renderSmellList(state.testSmells, state.textResources, state.originalHighlightedLines, handleRefactorClick);
     }
 
     /**
@@ -170,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
         state.textResources = window.LanguageManager.getTextResources();
         if (state.originalCode) {
             updateDetectionMessage();
-            renderSmellList();
+            ui.renderSmellList(state.testSmells, state.textResources, state.originalHighlightedLines, handleRefactorClick);
         }
     }
 

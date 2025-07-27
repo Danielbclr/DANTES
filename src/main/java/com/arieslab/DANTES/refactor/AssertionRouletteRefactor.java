@@ -4,12 +4,13 @@ import com.arieslab.DANTES.dto.RefactorResponse;
 import com.arieslab.DANTES.enums.SmellType;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.LambdaExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+// Import the LexicalPreservingPrinter
+import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +40,11 @@ public class AssertionRouletteRefactor implements ITestSmellRefactor {
         try {
             CompilationUnit cu = StaticJavaParser.parse(javaCode);
 
-            // Step 1: Find the specific AST node to be refactored.
+            // STEP 1: Set up the LexicalPreservingPrinter.
+            // This must be done *after* parsing and *before* any modifications.
+            // It traverses the AST and stores the original formatting.
+            LexicalPreservingPrinter.setup(cu);
+
             log.debug("Searching for refactorable assertion node at line {}", lineOfSmell);
             Optional<MethodCallExpr> targetNodeOpt = findNodeToRefactor(cu, lineOfSmell);
 
@@ -51,24 +56,29 @@ public class AssertionRouletteRefactor implements ITestSmellRefactor {
             MethodCallExpr targetNode = targetNodeOpt.get();
             log.debug("Found target node: '{}'. Proceeding with modification.", targetNode);
 
-            // Step 2: Perform the modification on the AST node.
+            // STEP 2: Perform the modification on the AST node.
             LambdaExpr lazyMessage = new LambdaExpr(
                     new NodeList<>(), // No parameters
                     new StringLiteralExpr("Add assertion message") // Body
             );
             targetNode.addArgument(lazyMessage);
 
-            // Step 3: Convert the entire modified AST to its final string form.
-            String refactoredCode = cu.toString();
+            // STEP 3: Use the LexicalPreservingPrinter to convert the AST to a string.
+            // This preserves original whitespace, comments, and formatting.
+            String refactoredCode = LexicalPreservingPrinter.print(cu);
 
-            // Step 4: Find the line number of the modified node in the *new* string.
-            List<Integer> changedLines = (lineOfSmell != -1) ? List.of(lineOfSmell) : List.of();
+            // STEP 4: Calculate the change in the number of lines.
+            // This is crucial for the frontend to update the line numbers of other smells.
+            int originalLineCount = javaCode.split("\r\n|\r|\n", -1).length;
+            int refactoredLineCount = refactoredCode.split("\r\n|\r|\n", -1).length;
+            int lineChange = refactoredLineCount - originalLineCount;
 
-            log.info("Successfully refactored Assertion Roulette at line {}. New highlighted line: {}", lineOfSmell, lineOfSmell);
-            return new RefactorResponse(refactoredCode, changedLines, "Refactoring successful.", 0);
+            List<Integer> changedLines = List.of(lineOfSmell);
+
+            log.info("Successfully refactored Assertion Roulette at line {}. Line change: {}", lineOfSmell, lineChange);
+            return new RefactorResponse(refactoredCode, changedLines, "Refactoring successful.", lineChange);
 
         } catch (Exception e) {
-            // IMPROVEMENT: Use the logger to record the exception, which is better than e.printStackTrace().
             log.error("Failed to refactor Assertion Roulette for line {} due to an exception.", lineOfSmell, e);
             return new RefactorResponse(javaCode, List.of(), "Refactoring failed: " + e.getMessage(), 0);
         }
@@ -95,25 +105,5 @@ public class AssertionRouletteRefactor implements ITestSmellRefactor {
             }
         }, null);
         return Optional.ofNullable(foundNode.get());
-    }
-
-    /**
-     * Finds the line number of a given node's string representation within the full source code.
-     * This is done *after* pretty-printing to get the final, accurate line number.
-     *
-     * @param fullCode The complete, refactored source code.
-     * @param nodeAsString The string representation of the node to find.
-     * @return The 1-indexed line number, or -1 if not found.
-     */
-    private int findLineNumberOfNode(String fullCode, String nodeAsString) {
-        // We look for the first line that contains the node's text.
-        // This is robust because the node's text is now the uniquely refactored version.
-        String[] lines = fullCode.split("\r\n|\r|\n");
-        for (int i = 0; i < lines.length; i++) {
-            if (lines[i].contains(nodeAsString)) {
-                return i + 1; // Return 1-indexed line number
-            }
-        }
-        return -1; // Should not happen in normal execution
     }
 }
