@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * and adds a descriptive lazy message to it, making the test failure
  * easier to diagnose.
  */
-@Slf4j // <-- ADD THIS ANNOTATION
+@Slf4j
 @Component
 public class AssertionRouletteRefactor implements ITestSmellRefactor {
 

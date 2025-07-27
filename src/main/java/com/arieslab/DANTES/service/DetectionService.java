@@ -28,7 +28,7 @@ public class DetectionService {
         if (smellDetectors == null || smellDetectors.isEmpty()) {
             // IMPROVEMENT: Use the SLF4J logger for consistency.
             log.warn("No smell detectors were found. Ensure they are annotated with @Component.");
-            return new DetectionResponse();
+            return new DetectionResponse(List.of(), javaCode, List.of());
         }
 
         log.info("Detection Service starting analysis with {} detector(s).", smellDetectors.size());
